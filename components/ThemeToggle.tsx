@@ -6,7 +6,6 @@ type ThemeMode = "light" | "dark" | "system";
 const STORAGE_KEY = "idecn-theme";
 
 function getSystemTheme(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
@@ -80,11 +79,15 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full
+                 border border-slate-200/70 bg-white/60 text-slate-900 shadow-sm
+                 hover:bg-white hover:shadow-md
+                 dark:border-slate-800/70 dark:bg-slate-950/40 dark:text-slate-100
+                 backdrop-blur transition"
       aria-label="Toggle theme"
       title="Toggle theme"
     >
-      {resolved === "dark" ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
+      {resolved === "dark" ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
     </button>
   );
 }

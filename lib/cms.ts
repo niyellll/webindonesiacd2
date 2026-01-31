@@ -90,7 +90,6 @@ export const portfolio = {
     summary:
       "A high-attendance cultural celebration showcasing Indonesian culinary heritage and community partnerships—built with measurable outcomes and repeatable playbooks.",
     highlights: ["5,000+ visitors", "20+ vendors", "Cross-community collaboration", "Media & community reach"],
-    // Optional image background (layout mirip App.jsx)
     imageSrc:
       "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=2000",
     imageAlt: "Culinary event crowd and food",
