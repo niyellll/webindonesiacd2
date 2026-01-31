@@ -5,30 +5,20 @@
   --nav-height: 80px;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+section { scroll-margin-top: calc(var(--nav-height) + 16px); }
 
-section {
-  scroll-margin-top: calc(var(--nav-height) + 18px);
-}
-
+/* top moving accent bar (smooth, no lag) */
 .idecn-progress {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 6px;
   z-index: 100;
   transform-origin: left;
   transform: scaleX(var(--scroll-progress));
   will-change: transform;
-
   background: linear-gradient(90deg, #dc2626, #2563eb, #dc2626);
   background-size: 200% 100%;
   animation: idecnGradientShift 3.2s linear infinite;
@@ -42,8 +32,4 @@ section {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .idecn-progress { animation: none; }
-}
-
-@layer utilities {
-  .text-balance { text-wrap: balance; }
 }

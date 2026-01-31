@@ -11,7 +11,6 @@ function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
-
 function CloseIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
@@ -20,11 +19,7 @@ function CloseIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-type Props = {
-  brandShort: string;
-  items: NavItem[];
-  contactHref: string;
-};
+type Props = { brandShort: string; items: NavItem[]; contactHref: string };
 
 export default function Navbar({ brandShort, items, contactHref }: Props) {
   const [active, setActive] = React.useState<string>(items[0]?.id ?? "");
@@ -33,22 +28,18 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
   const scrollToId = React.useCallback((id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const offset = 88;
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: "smooth" });
+    window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+    setMobileOpen(false);
   }, []);
 
   React.useEffect(() => {
-    const sectionIds = items
+    const ids = items
       .map((it) => it.href)
       .filter((h) => h.startsWith("#"))
       .map((h) => h.slice(1));
 
-    const els = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
-
-    if (els.length === 0) return;
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -57,11 +48,7 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
           .sort((a, b) => (a.boundingClientRect.top ?? 0) - (b.boundingClientRect.top ?? 0));
         if (visible[0]?.target?.id) setActive(visible[0].target.id);
       },
-      {
-        root: null,
-        rootMargin: "-25% 0px -65% 0px",
-        threshold: [0, 0.1, 0.2, 0.35],
-      }
+      { rootMargin: "-25% 0px -65% 0px", threshold: [0, 0.1, 0.2, 0.35] }
     );
 
     els.forEach((el) => io.observe(el));
@@ -70,21 +57,18 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
 
   React.useEffect(() => {
     let raf = 0;
-
     const update = () => {
       raf = 0;
       const doc = document.documentElement;
       const total = doc.scrollHeight - window.innerHeight;
-      const y = window.scrollY || window.pageYOffset || 0;
+      const y = window.scrollY || 0;
       const p = total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
       doc.style.setProperty("--scroll-progress", String(p));
     };
-
     const onScroll = () => {
       if (raf) return;
       raf = window.requestAnimationFrame(update);
     };
-
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -99,26 +83,22 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
     <>
       <div className="idecn-progress" aria-hidden="true" />
 
-      <header className="sticky top-0 z-[80] border-b border-slate-200/70 bg-white/70 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/50">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      {/* fixed nav like the layout you showed */}
+      <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <button
             type="button"
+            className="flex items-center gap-2 cursor-pointer select-none"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="group inline-flex items-center gap-3"
             aria-label="Scroll to top"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-red-600 text-xl font-black text-white shadow-sm shadow-red-600/20">
+            <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center font-bold text-white text-xl">
               I
-            </span>
-            <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-              {brandShort}
-            </span>
-            <span className="hidden text-sm font-semibold text-slate-500 group-hover:text-slate-700 dark:text-slate-400 dark:group-hover:text-slate-200 md:inline">
-              Indonesia ↔ U.S.
-            </span>
+            </div>
+            <span className="text-2xl font-black tracking-tighter">{brandShort}</span>
           </button>
 
-          <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">
+          <div className="hidden md:flex items-center gap-10">
             {items.map((it) => {
               const isActive = active === it.id;
               return (
@@ -132,78 +112,64 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
                     }
                   }}
                   className={[
-                    "text-[17px] font-semibold tracking-tight transition-colors",
+                    "text-lg font-semibold transition-colors duration-300",
                     isActive
                       ? "text-red-600 dark:text-red-500"
-                      : "text-slate-600 hover:text-blue-600 dark:text-slate-200 dark:hover:text-blue-400",
+                      : "text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400",
                   ].join(" ")}
                 >
                   {it.label}
                 </a>
               );
             })}
-          </nav>
+          </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <ThemeToggle />
 
             <a
-              href={contactHref}
-              className="hidden rounded-full bg-red-600 px-6 py-2.5 text-[15px] font-bold text-white shadow-sm shadow-red-600/25
-                         transition hover:-translate-y-0.5 hover:bg-red-700 hover:shadow-md hover:shadow-red-600/25
-                         lg:inline-flex"
-            >
-              Contact
-            </a>
+  href={contactHref}
+  className="w-full py-3 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-2xl font-bold text-center"
+>
+  Contact
+</a>
 
-            <button
-              type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white/60 text-slate-900
-                         hover:bg-white dark:border-slate-800 dark:bg-slate-950/50 dark:text-slate-100 md:hidden"
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? <CloseIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+
+            <button className="md:hidden" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
+              {mobileOpen ? <CloseIcon className="h-7 w-7" /> : <MenuIcon className="h-7 w-7" />}
             </button>
           </div>
         </div>
 
         {mobileOpen && (
-          <div className="border-t border-slate-200/70 bg-white/75 px-6 py-6 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/60 md:hidden">
-            <div className="flex flex-col gap-5">
-              {items.map((it) => {
-                const isActive = active === it.id;
-                return (
-                  <a
-                    key={it.id}
-                    href={it.href}
-                    onClick={(e) => {
-                      if (it.href.startsWith("#")) {
-                        e.preventDefault();
-                        scrollToId(it.id);
-                        setMobileOpen(false);
-                      }
-                    }}
-                    className={[
-                      "text-lg font-semibold tracking-tight",
-                      isActive ? "text-red-600 dark:text-red-500" : "text-slate-700 dark:text-slate-200",
-                    ].join(" ")}
-                  >
-                    {it.label}
-                  </a>
-                );
-              })}
-
-              <a
-                href={contactHref}
-                className="mt-2 inline-flex justify-center rounded-full bg-red-600 px-6 py-3 text-base font-bold text-white hover:bg-red-700"
-              >
-                Contact
-              </a>
-            </div>
+          <div className="md:hidden bg-white dark:bg-slate-900 p-6 flex flex-col gap-6 border-b border-slate-200 dark:border-slate-800">
+            {items.map((it) => {
+              const isActive = active === it.id;
+              return (
+                <a
+                  key={it.id}
+                  href={it.href}
+                  onClick={(e) => {
+                    if (it.href.startsWith("#")) {
+                      e.preventDefault();
+                      scrollToId(it.id);
+                    }
+                  }}
+                  className={[
+                    "text-lg font-semibold",
+                    isActive ? "text-red-600 dark:text-red-500" : "text-slate-700 dark:text-slate-200",
+                  ].join(" ")}
+                >
+                  {it.label}
+                </a>
+              );
+            })}
+            <a href={contactHref} className="w-full py-3 bg-red-600 text-white rounded-2xl font-bold text-center">
+              Contact
+            </a>
           </div>
         )}
-      </header>
+      </nav>
     </>
   );
 }

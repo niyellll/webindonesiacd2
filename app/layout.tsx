@@ -4,11 +4,7 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import { navItems, site } from "../lib/cms";
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-});
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: `${site.orgShort} — ${site.orgName}`,
@@ -37,10 +33,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-screen bg-slate-50 text-slate-900 selection:bg-red-600 selection:text-white dark:bg-slate-950 dark:text-slate-100">
+      <body className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-red-500 selection:text-white transition-colors duration-500">
+        {/* Batik background (subtle) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-0 opacity-[0.10] dark:opacity-[0.06]"
+          className="fixed inset-0 opacity-[0.06] dark:opacity-[0.08] pointer-events-none z-0"
           style={{
             backgroundImage: "url('/batik-pattern.svg')",
             backgroundRepeat: "repeat",
@@ -48,9 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             backgroundSize: "640px 640px",
           }}
         />
+        {/* readability wash */}
         <div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-0 bg-gradient-to-b from-white/70 via-white/40 to-white/20 dark:from-slate-950/70 dark:via-slate-950/40 dark:to-slate-950/20"
+          className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-white/70 via-white/40 to-white/20 dark:from-slate-950/70 dark:via-slate-950/40 dark:to-slate-950/20"
         />
 
         <div className="relative z-10">

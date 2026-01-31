@@ -80,15 +80,11 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="inline-flex h-11 w-11 items-center justify-center rounded-full
-                 border border-slate-200 bg-white/70 text-slate-900 shadow-sm
-                 hover:bg-white hover:shadow-md
-                 dark:border-slate-800 dark:bg-slate-950/60 dark:text-slate-100
-                 backdrop-blur transition"
+      className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
       aria-label="Toggle theme"
       title="Toggle theme"
     >
-      {resolved === "dark" ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+      {resolved === "dark" ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
     </button>
   );
 }
