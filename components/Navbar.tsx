@@ -38,7 +38,6 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
     window.scrollTo({ top, behavior: "smooth" });
   }, []);
 
-  // Scrollspy
   React.useEffect(() => {
     const ids = items
       .map((it) => it.href)
@@ -62,10 +61,8 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
     return () => io.disconnect();
   }, [items]);
 
-  // Progress bar (RAF to avoid lag)
   React.useEffect(() => {
     let raf = 0;
-
     const update = () => {
       raf = 0;
       const doc = document.documentElement;
@@ -74,12 +71,10 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
       const p = total > 0 ? Math.min(1, Math.max(0, y / total)) : 0;
       doc.style.setProperty("--scroll-progress", String(p));
     };
-
     const onScroll = () => {
       if (raf) return;
       raf = window.requestAnimationFrame(update);
     };
-
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
@@ -94,16 +89,13 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
     <>
       <div className="idecn-progress" aria-hidden="true" />
 
-      {/* Fixed navbar (mirip App.jsx) */}
-      <header className="fixed top-0 left-0 right-0 z-[80] border-b border-slate-200/70 bg-white/65 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/45">
+      <header className="fixed top-0 left-0 right-0 z-[80] border-b border-white/10 bg-slate-950/55 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/40">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
           <a href="#" className="group inline-flex items-center gap-3">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-red-600 text-xl font-black text-white shadow-sm shadow-red-600/20">
               I
             </span>
-            <span className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
-              {brandShort}
-            </span>
+            <span className="text-2xl font-black tracking-tight text-white">{brandShort}</span>
           </a>
 
           <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">
@@ -121,9 +113,7 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
                   }}
                   className={[
                     "text-[17px] font-semibold tracking-tight transition-colors",
-                    isActive
-                      ? "text-red-600 dark:text-red-500"
-                      : "text-slate-200/90 dark:text-slate-200/90 hover:text-blue-300 dark:hover:text-blue-300",
+                    isActive ? "text-red-500" : "text-white/80 hover:text-blue-300",
                   ].join(" ")}
                 >
                   {it.label}
@@ -137,17 +127,14 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
 
             <a
               href={contactHref}
-              className="hidden rounded-full bg-white px-6 py-2.5 text-[15px] font-bold text-slate-900 shadow-sm
-                         transition hover:-translate-y-0.5 hover:shadow-md
-                         dark:bg-slate-100 dark:text-slate-900 lg:inline-flex"
+              className="hidden rounded-full bg-white px-6 py-2.5 text-[15px] font-bold text-slate-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md lg:inline-flex"
             >
               Contact
             </a>
 
             <button
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200/70 bg-white/50 text-slate-900
-                         hover:bg-white dark:border-slate-800/70 dark:bg-slate-950/40 dark:text-slate-100 md:hidden backdrop-blur transition"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white hover:bg-white/15 md:hidden backdrop-blur transition"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >
@@ -157,7 +144,7 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
         </div>
 
         {mobileOpen && (
-          <div className="border-t border-slate-200/70 bg-white/75 px-6 py-6 backdrop-blur-xl dark:border-slate-800/70 dark:bg-slate-950/60 md:hidden">
+          <div className="border-t border-white/10 bg-slate-950/75 px-6 py-6 backdrop-blur-xl md:hidden">
             <div className="flex flex-col gap-5">
               {items.map((it) => {
                 const isActive = active === it.id;
@@ -174,7 +161,7 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
                     }}
                     className={[
                       "text-lg font-semibold tracking-tight",
-                      isActive ? "text-red-600 dark:text-red-500" : "text-slate-800 dark:text-slate-200",
+                      isActive ? "text-red-500" : "text-white/90",
                     ].join(" ")}
                   >
                     {it.label}
@@ -184,8 +171,7 @@ export default function Navbar({ brandShort, items, contactHref }: Props) {
 
               <a
                 href={contactHref}
-                className="mt-2 inline-flex justify-center rounded-2xl bg-slate-900 px-6 py-3 text-base font-bold text-white
-                           dark:bg-slate-100 dark:text-slate-900"
+                className="mt-2 inline-flex justify-center rounded-2xl bg-white px-6 py-3 text-base font-bold text-slate-900"
               >
                 Contact
               </a>

@@ -1,6 +1,6 @@
 ﻿@import "tailwindcss";
 
-/* Tailwind v4: make dark: follow .dark class (so toggle works) */
+/* Tailwind v4: make dark: follow .dark class */
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -21,12 +21,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* anchors won't hide behind the fixed navbar */
 section {
   scroll-margin-top: calc(var(--nav-height) + 18px);
 }
 
-/* Top moving accent bar (smooth): scaleX driven by --scroll-progress */
+/* top moving accent bar (smooth) */
 .idecn-progress {
   position: fixed;
   top: 0;
@@ -34,7 +33,6 @@ section {
   right: 0;
   height: 6px;
   z-index: 100;
-
   transform-origin: left;
   transform: scaleX(var(--scroll-progress));
   will-change: transform;
@@ -42,7 +40,7 @@ section {
   background: linear-gradient(90deg, #dc2626, #2563eb, #dc2626);
   background-size: 200% 100%;
   animation: idecnGradientShift 3.2s linear infinite;
-  filter: saturate(1.1);
+  filter: saturate(1.15);
 }
 
 @keyframes idecnGradientShift {
