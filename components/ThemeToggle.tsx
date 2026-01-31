@@ -61,7 +61,6 @@ export default function ThemeToggle() {
         setResolved(getSystemTheme());
       }
     };
-
     mql.addEventListener("change", onChange);
     return () => mql.removeEventListener("change", onChange);
   }, []);
@@ -80,9 +79,9 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       className="inline-flex h-11 w-11 items-center justify-center rounded-full
-                 border border-white/20 bg-white/10 text-white shadow-sm
-                 hover:bg-white/15 hover:shadow-md
-                 dark:border-slate-800/70 dark:bg-slate-950/30 dark:text-slate-100
+                 border border-slate-200/70 bg-white/60 text-slate-900 shadow-sm
+                 hover:bg-white hover:shadow-md
+                 dark:border-white/15 dark:bg-white/10 dark:text-white
                  backdrop-blur transition"
       aria-label="Toggle theme"
       title="Toggle theme"
